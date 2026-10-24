@@ -34,9 +34,11 @@ export const CUSTOM_AVATAR_DISPLAY_MODEL_ID = 'preset-custom-1'
  * Unit tests (Vite mode `test`) run without it, because they assert upstream's
  * stock defaults.
  */
-export const customAvatar: CustomAvatar | undefined = import.meta.env.MODE === 'test' ? undefined : {
-  name: 'Beth',
-  format: 'vrm',
-  url: '/custom-avatar/beth.vrm',
-  previewImage: '/custom-avatar/beth-preview.png',
-}
+export const customAvatar: CustomAvatar | undefined = import.meta.env.MODE === 'test'
+  ? undefined
+  : {
+      name: 'Beth',
+      format: 'vrm',
+      url: '/custom-avatar/beth.vrm',
+      previewImage: '/custom-avatar/beth-preview.png',
+    }
