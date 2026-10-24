@@ -1,0 +1,21 @@
+# Netlify build for the web app (apps/stage-web) from the repository root.
+# Works with the Netlify UI's base and package directories left empty.
+[build]
+command = "pnpm -F @proj-airi/stage-web run build"
+publish = "apps/stage-web/dist"
+
+[build.environment]
+NODE_VERSION = "24"
+NODE_OPTIONS = "--max-old-space-size=4096"
+
+[[redirects]]
+from = "/assets/*"
+to = "/assets/:splat"
+status = 200
+force = true
+
+[[redirects]]
+from = "/*"
+to = "/index.html"
+status = 200
+force = false

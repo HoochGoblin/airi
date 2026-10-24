@@ -30,8 +30,11 @@ export const CUSTOM_AVATAR_DISPLAY_MODEL_ID = 'preset-custom-1'
  * ```
  *
  * Leave it `undefined` to keep AIRI's stock default (Hiyori).
+ *
+ * Unit tests (Vite mode `test`) run without it, because they assert upstream's
+ * stock defaults.
  */
-export const customAvatar: CustomAvatar | undefined = {
+export const customAvatar: CustomAvatar | undefined = import.meta.env.MODE === 'test' ? undefined : {
   name: 'Beth',
   format: 'vrm',
   url: '/custom-avatar/beth.vrm',

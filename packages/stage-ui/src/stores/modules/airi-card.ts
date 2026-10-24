@@ -29,6 +29,7 @@ import { toast } from 'vue-sonner'
 import { DEFAULT_ARTISTRY_WIDGET_SPAWNING_PROMPT } from '../../constants/prompts/character-defaults'
 import { formatLive2DActPrompt } from '../../constants/prompts/live2d-act'
 import { CUSTOM_AVATAR_DISPLAY_MODEL_ID, customAvatar } from '../../custom/avatar'
+import { customCharacter } from '../../custom/character'
 import { documentSyncRepo } from '../../database/repos/document-sync.repo'
 import { authedFetch } from '../../libs/auth-fetch'
 import { joinCard, splitCard } from '../../libs/character-card-sync'
@@ -806,9 +807,9 @@ export const useAiriCardStore = defineStore('airi-card', () => {
    * find the edits of the user.
    */
   const builtInCard = computed(() => newAiriCard({
-    name: 'ReLU',
+    name: customCharacter?.name ?? 'ReLU',
     version: '1.0.0',
-    description: t('base.prompt.prefix'),
+    description: customCharacter?.description ?? t('base.prompt.prefix'),
     extensions: {
       airi: {
         // Every device ships the preset model, so this reference is part of the
