@@ -28,6 +28,7 @@ import { toast } from 'vue-sonner'
 
 import { DEFAULT_ARTISTRY_WIDGET_SPAWNING_PROMPT } from '../../constants/prompts/character-defaults'
 import { formatLive2DActPrompt } from '../../constants/prompts/live2d-act'
+import { CUSTOM_AVATAR_DISPLAY_MODEL_ID, customAvatar } from '../../custom/avatar'
 import { documentSyncRepo } from '../../database/repos/document-sync.repo'
 import { authedFetch } from '../../libs/auth-fetch'
 import { joinCard, splitCard } from '../../libs/character-card-sync'
@@ -80,7 +81,24 @@ const builtInDescriptions = Object.values(localeMessages).flatMap((messages) => 
 const synchronizedCardSchema = looseObject({ name: string(), version: string() })
 
 /** Every device can load this Display Model, because it is bundled and not stored. */
-const BUILT_IN_DISPLAY_MODEL_ID = 'preset-live2d-1'
+const BUILT_IN_DISPLAY_MODEL_ID = customAvatar ? CUSTOM_AVATAR_DISPLAY_MODEL_ID : 'preset-live2d-1'
+/**
+ * Avatar Model of the built-in `default` card. Its id is fixed, because every
+ * device must create the same card.
+ */
+const builtInAvatarModel: CharacterAvatarModelReference = customAvatar && customAvatar.format !== 'live2d-zip'
+  ? { id: 'default-custom-avatar-model', displayModelId: CUSTOM_AVATAR_DISPLAY_MODEL_ID, type: customAvatar.format === 'vrm' ? 'vrm' : 'tachie', config: {} }
+  : {
+      id: customAvatar ? 'default-custom-avatar-model' : 'default-live2d-avatar-model',
+      displayModelId: BUILT_IN_DISPLAY_MODEL_ID,
+      type: 'live2d',
+      config: {
+        controls: {
+          disabledExpressions: [],
+          disabledMotions: [],
+        },
+      },
+    }
 /** Global Stage model choice that versions before PR #2458 stored outside any card. */
 const LEGACY_STAGE_MODEL_STORAGE_KEY = 'settings/stage/model'
 const emptyAvatarModels: readonly CharacterAvatarModelReference[] = Object.freeze([])
@@ -795,18 +813,8 @@ export const useAiriCardStore = defineStore('airi-card', () => {
       airi: {
         // Every device ships the preset model, so this reference is part of the
         // built-in content. An unedited `default` card then sends no avatar fields.
-        defaultAvatarModelId: 'default-live2d-avatar-model',
-        avatarModels: [{
-          id: 'default-live2d-avatar-model',
-          displayModelId: 'preset-live2d-1',
-          type: 'live2d',
-          config: {
-            controls: {
-              disabledExpressions: [],
-              disabledMotions: [],
-            },
-          },
-        }],
+        defaultAvatarModelId: builtInAvatarModel.id,
+        avatarModels: [builtInAvatarModel],
         modules: {
           consciousness: { provider: '', model: '' },
           speech: { provider: '', model: '', voice_id: '' },

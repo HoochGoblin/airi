@@ -9,6 +9,7 @@ import { computed, ref, watch } from 'vue'
 
 import * as v from 'valibot'
 
+import { CUSTOM_AVATAR_DISPLAY_MODEL_ID, customAvatar } from '../custom/avatar'
 import { displayModelsRepo } from '../database/repos/display-models.repo'
 import { DISPLAY_MODEL_SYNC_FLAG } from '../libs/feature-flags'
 import { downloadVerified, putToTarget, sha256Hex } from '../libs/file-transfer/transfer'
@@ -80,6 +81,10 @@ const displayModelsPresets: DisplayModel[] = [
   { id: 'preset-live2d-2', format: DisplayModelFormat.Live2dZip, type: 'url', url: presetLive2dFreeUrl, name: 'Hiyori (Free)', previewImage: presetLive2dPreview, importedAt: 1733113886840 },
   { id: 'preset-vrm-1', format: DisplayModelFormat.VRM, type: 'url', url: presetVrmAvatarAUrl, name: 'AvatarSample_A', previewImage: presetVrmAvatarAPreview, importedAt: 1733113886840 },
   { id: 'preset-vrm-2', format: DisplayModelFormat.VRM, type: 'url', url: presetVrmAvatarBUrl, name: 'AvatarSample_B', previewImage: presetVrmAvatarBPreview, importedAt: 1733113886840 },
+  // Newest importedAt so the custom avatar sorts first in the picker.
+  ...(customAvatar
+    ? [{ id: CUSTOM_AVATAR_DISPLAY_MODEL_ID, format: customAvatar.format as DisplayModelFormat, type: 'url' as const, url: customAvatar.url, name: customAvatar.name, previewImage: customAvatar.previewImage, importedAt: 1798000000000 }]
+    : []),
 ]
 
 export const useDisplayModelsStore = defineStore('display-models', () => {

@@ -68,22 +68,28 @@ export const providerAnthropic = defineProvider<AnthropicConfig, 'anthropic'>({
   extraMethods: {
     listModels: async () => ([
       {
-        id: 'claude-haiku-4-5-20251001',
-        name: 'Claude Haiku 4.5',
+        id: 'claude-opus-5-5',
+        name: 'Claude Opus 5.5',
         provider: 'anthropic',
-        description: 'Anthropic fastest model with near-frontier intelligence',
+        description: 'Anthropic most capable Opus model for complex reasoning and agents',
       },
       {
-        id: 'claude-sonnet-4-5-20250929',
-        name: 'Claude Sonnet 4.5',
+        id: 'claude-sonnet-5-5',
+        name: 'Claude Sonnet 5.5',
         provider: 'anthropic',
-        description: 'Anthropic smartest model for complex agents and coding',
+        description: 'Anthropic balance of speed and intelligence for everyday chat',
       },
       {
-        id: 'claude-opus-4-1-20250805',
-        name: 'Claude Opus 4.1',
+        id: 'claude-haiku-5-5',
+        name: 'Claude Haiku 5.5',
         provider: 'anthropic',
-        description: 'Exceptional model for specialized reasoning tasks',
+        description: 'Anthropic fastest and lowest-cost model',
+      },
+      {
+        id: 'claude-fable-5-1',
+        name: 'Claude Fable 5.1',
+        provider: 'anthropic',
+        description: 'Anthropic most capable model, priced above Opus',
       },
     ] satisfies ModelInfo[]),
   },
