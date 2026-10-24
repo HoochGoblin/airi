@@ -31,4 +31,9 @@ export const CUSTOM_AVATAR_DISPLAY_MODEL_ID = 'preset-custom-1'
  *
  * Leave it `undefined` to keep AIRI's stock default (Hiyori).
  */
-export const customAvatar: CustomAvatar | undefined = undefined
+export const customAvatar: CustomAvatar | undefined = {
+  name: 'Beth',
+  format: 'vrm',
+  url: '/custom-avatar/beth.vrm',
+  previewImage: '/custom-avatar/beth-preview.png',
+}
