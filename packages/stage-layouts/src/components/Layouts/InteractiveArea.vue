@@ -9,6 +9,7 @@ import { useChatStore } from '@proj-airi/stage-ui/stores/chat'
 import { useChatSessionStore } from '@proj-airi/stage-ui/stores/chat/session-store'
 import { useChatStreamStore } from '@proj-airi/stage-ui/stores/chat/stream-store'
 import { useContextBridgeStore } from '@proj-airi/stage-ui/stores/mods/api/context-bridge'
+import { useAiriCardStore } from '@proj-airi/stage-ui/stores/modules/airi-card'
 import { useDeferredMount } from '@proj-airi/ui'
 import { storeToRefs } from 'pinia'
 import { computed, ref } from 'vue'
@@ -26,6 +27,7 @@ const { activeTurns, backgroundTasks } = storeToRefs(chatOrchestrator)
 const { activeSessionId, messages } = storeToRefs(useChatSessionStore())
 const { streamingMessage } = storeToRefs(useChatStreamStore())
 const { isReceivingRemoteStream } = storeToRefs(useContextBridgeStore())
+const { activeCard } = storeToRefs(useAiriCardStore())
 
 const isLoading = ref(true)
 const composer = useChatComposer<ChatImageAttachment>({
@@ -39,6 +41,7 @@ const composer = useChatComposer<ChatImageAttachment>({
 })
 const { clearReplyForMessage, selectReply } = composer
 const historyMessages = computed(() => messages.value)
+const assistantLabel = computed(() => activeCard.value?.name?.trim() || undefined)
 const isActiveSessionSending = computed(() => (
   (activeTurns.value.some(turn => turn.sessionId === activeSessionId.value))
   || isReceivingRemoteStream.value
@@ -81,6 +84,7 @@ async function handleRetryMessage(index: number) {
         <div w="full" max-h="<md:[60%]" py="<sm:2" flex="~ col" rounded="lg" relative min-h-0 flex-1 overflow-hidden px="2 <md:0" py-4>
           <ChatHistory
             v-if="isReady"
+            :assistant-label="assistantLabel"
             :messages="historyMessages"
             :sending="isActiveSessionSending"
             :streaming-message="visibleStreamingMessage"
